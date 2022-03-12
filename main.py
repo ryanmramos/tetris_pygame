@@ -1,5 +1,3 @@
-# from cgi import test
-from string import whitespace
 import pygame
 import os
 from shapes import Shape

@@ -26,14 +26,22 @@ j_shape_points = [pygame.Vector2(200, 320), pygame.Vector2(200 + UNIT_LENGTH, 32
     pygame.Vector2(200 + 2 * UNIT_LENGTH, 320 - 2 * UNIT_LENGTH),
     pygame.Vector2(200 + 2 * UNIT_LENGTH, 320 + UNIT_LENGTH),
     pygame.Vector2(200, 320 + UNIT_LENGTH)]
-rotate_about_j = pygame.Vector2(200 + 3 / 2 * UNIT_LENGTH, 320 + 1 / 2 * UNIT_LENGTH)
+rotate_about_j = pygame.Vector2(200 + 3 / 2 * UNIT_LENGTH, 320 - 1 / 2 * UNIT_LENGTH)
+
+# L SHAPE
+l_shape_points = [pygame.Vector2(200, 320), pygame.Vector2(200, 320 - 3 * UNIT_LENGTH),
+    pygame.Vector2(200 + UNIT_LENGTH, 320 - 3 * UNIT_LENGTH),
+    pygame.Vector2(200 + UNIT_LENGTH, 320 - UNIT_LENGTH),
+    pygame.Vector2(200 + 2 * UNIT_LENGTH, 320 - UNIT_LENGTH),
+    pygame.Vector2(200 + 2 * UNIT_LENGTH, 320)]
+rotate_about_l = pygame.Vector2(200 + 1 / 2 * UNIT_LENGTH, 320 - 3 / 2 * UNIT_LENGTH)
 
 
 class Shape:
     def __init__(self):
         self.color = RED
-        self.points = j_shape_points
-        self.rotate_about = rotate_about_j
+        self.points = l_shape_points
+        self.rotate_about = rotate_about_l
 
     def draw_shape(self, WIN):
         pygame.draw.polygon(WIN, self.color, self.points)
