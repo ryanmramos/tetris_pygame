@@ -32,6 +32,25 @@ class Grid:
         pg.draw.line(WIN, GREY, (self.START_X, self.START_Y + self.num_rows * self.UNIT_LENGTH),
             (self.START_X + self.num_cols * self.UNIT_LENGTH, self.START_Y + self.num_rows * self.UNIT_LENGTH), 2)
 
+    def destroy_rows(self, placed_shapes, rows_to_destroy):
+        min_row = min(rows_to_destroy)
+        for shape in placed_shapes:
+            i = len(shape.grid_cords) - 1
+            while i >= 0:
+                cordX = (int) (shape.grid_cords[i].x)
+                cordY = (int) (shape.grid_cords[i].y)
+                if cordY in rows_to_destroy:
+                    shape.grid.grid[cordX][cordY] = 0
+                    shape.grid_cords.pop(i)
+
+                elif cordY < min_row:
+                    shape.grid.grid[cordX][cordY] = 0
+                    shape.grid.grid[cordX][cordY + len(rows_to_destroy)] = 1
+                    shape.grid_cords[i].update(shape.grid_cords[i].x, shape.grid_cords[i].y +
+                        len(rows_to_destroy))
+                i -= 1
+        return placed_shapes
+
     def test_print(self):
         print("test")
 

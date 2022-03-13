@@ -68,6 +68,29 @@ def get_random_shape():
     else:
         return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
 
+def place_and_check(placed_shapes, moving_shape):
+    placed_shapes.append(moving_shape)
+    checked_rows = []
+    rows_to_destroy = []
+    current_grid = moving_shape.grid.grid
+    for cord in moving_shape.grid_cords:
+        cordY = int(cord.y)
+        if not cordY in checked_rows:
+            checked_rows.append(cordY)
+            destroy = True
+            for i in range(0, moving_shape.grid.num_cols):
+                if current_grid[i][cordY] == 0:
+                    destroy = False
+                    break
+            if destroy:
+                rows_to_destroy.append(cordY)
+                print(f"destroy row:{cordY}")
+    
+    if len(rows_to_destroy) > 0:
+        placed_shapes = moving_shape.grid.destroy_rows(placed_shapes, rows_to_destroy)
+
+    return get_random_shape()
+
 def main():
     
     clock = pg.time.Clock()
@@ -121,20 +144,17 @@ def main():
 
         if frame_num % 30 == 0 and not down_held:
             if not moving_shape.move_down():
-                placed_shapes.append(moving_shape)
-                moving_shape = get_random_shape()
+                moving_shape = place_and_check(placed_shapes, moving_shape)
 
         elif frame_num % 3 == 0 and down_held:
             if not moving_shape.move_down():
-                placed_shapes.append(moving_shape)
-                moving_shape = get_random_shape()
+                moving_shape = place_and_check(placed_shapes, moving_shape)
 
         if quick_drop:
             while moving_shape.move_down():
                 continue
             quick_drop = False
-            placed_shapes.append(moving_shape)
-            moving_shape = get_random_shape()
+            moving_shape = place_and_check(placed_shapes, moving_shape)
         
         if frame_num % 5 == 0:
             if left_held:
