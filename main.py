@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 import os
 from shapes import Shape
 
@@ -6,7 +6,7 @@ from shapes import Shape
 WIDTH, HEIGHT = 600, 900
 
 # Set window
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+WIN = pg.display.set_mode((WIDTH, HEIGHT))
 
 # FPS
 FPS = 60
@@ -18,7 +18,7 @@ RED = (255, 0 ,0)
 YELLOW = (255, 255, 0)
 
 # Set windown name
-pygame.display.set_caption("tetris :)")
+pg.display.set_caption("tetris :)")
 
 def draw_window(shapes):
     WIN.fill(WHITE)
@@ -26,12 +26,12 @@ def draw_window(shapes):
         shape.draw_shape(WIN)
         # print(shape)
     
-    pygame.display.update()
+    pg.display.update()
 
     
 def main():
     
-    clock = pygame.time.Clock()
+    clock = pg.time.Clock()
     run = True
     shapes = []
     testShape = Shape()
@@ -39,8 +39,8 @@ def main():
     frame_num = 0
     while(run):
         clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
                 run = False
 
         draw_window(shapes)
@@ -50,7 +50,7 @@ def main():
         if frame_num >= 60:
             frame_num = 0
             
-    pygame.quit()
+    pg.quit()
 
 if __name__ == "__main__":
     main()
