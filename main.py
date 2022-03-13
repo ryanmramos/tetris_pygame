@@ -8,7 +8,9 @@ from s_shape import S_shape
 from t_shape import T_shape
 from z_shape import Z_shape
 from shapes import Shape
+from grid import Grid
 import math
+import random
 
 # Window size
 WIDTH, HEIGHT = 600, 900
@@ -24,6 +26,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0 ,0)
 YELLOW = (255, 255, 0)
+GREY = (170, 170, 170)
 
 # Unit length
 UNIT_LENGTH = 20
@@ -31,32 +34,56 @@ UNIT_LENGTH = 20
 # Set windown name
 pg.display.set_caption("tetris :)")
 
-def draw_window(shapes, moving_shape):
-    WIN.fill(WHITE)
-    for shape in shapes:
+def draw_window(placed_shapes, moving_shape, grid):
+    WIN.fill(GREY)
+    for shape in placed_shapes:
         shape.draw_shape(WIN)
         # print(shape)
     
     moving_shape.draw_shape(WIN)
-    pg.draw.circle(WIN, BLACK, (moving_shape.rotate_about.x, moving_shape.rotate_about.y), 3)
 
-    pg.draw.line(WIN, RED, (120, 0), (120, HEIGHT))
-    pg.draw.line(WIN, RED, (320, 0), (320, HEIGHT))
+    # debug circle to see center of rotation
+    # pg.draw.circle(WIN, BLACK, (120 + UNIT_LENGTH * moving_shape.rotate_about.x,
+    #     120 + UNIT_LENGTH * moving_shape.rotate_about.y), 3)
+
+    grid.draw_grid(WIN)
     
     pg.display.update()
 
-    
+def get_random_shape():
+    # return O_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    i = random.randint(0, 7)
+    if i == 0:
+        return I_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    elif i == 1:
+        return J_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    elif i == 2:
+        return L_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    elif i == 3:
+        return O_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    elif i == 4:
+        return S_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    elif i == 5:
+        return T_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    else:
+        return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+
 def main():
     
     clock = pg.time.Clock()
     run = True
     shapes = []
-    moving_shape = Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+    placed_shapes = []
+    moving_shape = get_random_shape()
     # testShape = Shape(UNIT_LENGTH, WIDTH, HEIGHT)
-    frame_num = 0
+    frame_num = 1
     down_held = False # keeps track of whether or not down is being held
+    left_held = False # keeps track of whether or not left is being held
+    right_held = False # keeps track of whether or not right is being held
+    grid = Grid(120, 120, 20)
     while(run):
         clock.tick(FPS)
+        quick_drop = False
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 run = False
@@ -66,27 +93,55 @@ def main():
                     run = False
 
                 if event.key == pg.K_UP:
-                    moving_shape.rotate(math.pi / 2)
+                    moving_shape.rotate()
                 
                 if event.key == pg.K_LEFT:
-                    moving_shape.move_left()
+                    left_held = True
+                    # moving_shape.move_left()
 
                 if event.key == pg.K_RIGHT:
-                    moving_shape.move_right()
+                    right_held = True
+                    # moving_shape.move_right()
 
                 if event.key == pg.K_DOWN:
                     down_held = True
+
+                if event.key == pg.K_SPACE:
+                    quick_drop = True
             
             if event.type == pg.KEYUP:
                 if event.key == pg.K_DOWN:
                     down_held = False
+                if event.key == pg.K_LEFT:
+                    left_held = False
+                if event.key == pg.K_RIGHT:
+                    right_held = False
+
+        draw_window(placed_shapes, moving_shape, grid)
 
         if frame_num % 30 == 0 and not down_held:
-            moving_shape.move_down()
-        elif frame_num % 3 == 0 and down_held:
-            moving_shape.move_down()
+            if not moving_shape.move_down():
+                placed_shapes.append(moving_shape)
+                moving_shape = get_random_shape()
 
-        draw_window(shapes, moving_shape)
+        elif frame_num % 3 == 0 and down_held:
+            if not moving_shape.move_down():
+                placed_shapes.append(moving_shape)
+                moving_shape = get_random_shape()
+
+        if quick_drop:
+            while moving_shape.move_down():
+                continue
+            quick_drop = False
+            placed_shapes.append(moving_shape)
+            moving_shape = get_random_shape()
+        
+        if frame_num % 5 == 0:
+            if left_held:
+                moving_shape.move_left()
+            if right_held:
+                moving_shape.move_right()
+
         # if frame_num % 20 == 0:
         #     shapes[0].rotate()
         frame_num += 1

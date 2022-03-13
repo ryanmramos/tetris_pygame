@@ -4,49 +4,50 @@ import pygame as pg
 START_X = 200
 START_Y = 320
 
+BLUE = (0, 0, 255)
+
 class J_shape(Shape):
     def __init__(self, UNIT_LENGTH, WIDTH, HEIGHT):
         super().__init__(UNIT_LENGTH, WIDTH, HEIGHT)
-        self.left_most_grid = 4
-        self.right_most_grid = 6
-        self.points = [pg.Vector2(START_X, START_Y), pg.Vector2(START_X + UNIT_LENGTH, START_Y),
-            pg.Vector2(START_X + UNIT_LENGTH, START_Y + UNIT_LENGTH),
-            pg.Vector2(START_X + 3 * UNIT_LENGTH, START_Y + UNIT_LENGTH),
-            pg.Vector2(START_X + 3 * UNIT_LENGTH, START_Y + 2 * UNIT_LENGTH),
-            pg.Vector2(START_X, START_Y + 2 * UNIT_LENGTH)]
-        self.rotate_about = pg.Vector2(START_X + 3 / 2 * UNIT_LENGTH,
-            START_Y + 3 / 2 * UNIT_LENGTH)
+        self.color = BLUE
+        self.left_most_grid = 3
+        self.right_most_grid = 5
+        self.UNIT_LENGTH = UNIT_LENGTH
+        self.grid_cords = [pg.Vector2(3, 0), pg.Vector2(3, 1), pg.Vector2(4, 1), pg.Vector2(5, 1)]
+        self.rotate_about = pg.Vector2(4.5, 1.5)
 
-    def move_left(self):
-        if self.left_most_grid > 0:
-            self.left_most_grid -=1
-            self.right_most_grid -= 1
-            super().move_left()
+    # def move_left(self):
+    #     if self.left_most_grid > 0:
+    #         self.left_most_grid -=1
+    #         self.right_most_grid -= 1
+    #         super().move_left()
 
-    def move_right(self):
-        if self.right_most_grid < 9:
-            self.left_most_grid += 1
-            self.right_most_grid += 1
-            super().move_right()
+    # def move_right(self):
+    #     if self.right_most_grid < 9:
+    #         self.left_most_grid += 1
+    #         self.right_most_grid += 1
+    #         super().move_right()
 
-    def rotate(self, theta):
+    def rotate(self):
         if self.rotate_num == 0:
+            self.grid_cords[0].update(self.grid_cords[0].x + 2, self.grid_cords[0].y)
+            self.grid_cords[1].update(self.grid_cords[1].x + 1, self.grid_cords[1].y - 1)
+            self.grid_cords[3].update(self.grid_cords[3].x - 1, self.grid_cords[3].y + 1)
             self.left_most_grid += 1
         elif self.rotate_num == 1:
+            self.grid_cords[0].update(self.grid_cords[0].x, self.grid_cords[0].y + 2)
+            self.grid_cords[1].update(self.grid_cords[1].x + 1, self.grid_cords[1].y + 1)
+            self.grid_cords[3].update(self.grid_cords[3].x - 1, self.grid_cords[3].y - 1)
             self.left_most_grid -= 1
         elif self.rotate_num == 2:
+            self.grid_cords[0].update(self.grid_cords[0].x - 2, self.grid_cords[0].y)
+            self.grid_cords[1].update(self.grid_cords[1].x - 1, self.grid_cords[1].y + 1)
+            self.grid_cords[3].update(self.grid_cords[3].x + 1, self.grid_cords[3].y - 1)
             self.right_most_grid -= 1
         else:
+            self.grid_cords[0].update(self.grid_cords[0].x, self.grid_cords[0].y - 2)
+            self.grid_cords[1].update(self.grid_cords[1].x - 1, self.grid_cords[1].y - 1)
+            self.grid_cords[3].update(self.grid_cords[3].x + 1, self.grid_cords[3].y + 1)
             self.right_most_grid += 1
 
-        if self.left_most_grid < 0:
-            difference = -1 * self.left_most_grid
-            for i in range(0, difference):
-                self.move_right()
-
-        elif self.right_most_grid > 9:
-            difference = self.right_most_grid - 9
-            for i in range(0, difference):
-                self.move_left()
-
-        super().rotate(theta)
+        super().rotate()
