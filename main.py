@@ -65,12 +65,10 @@ def get_random_shape():
     elif i == 3:
         return O_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     elif i == 4:
-        # return S_shape(UNIT_LENGTH, WIDTH, HEIGHT)
-        return I_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+        return S_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     elif i == 5:
         return T_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     else:
-        # return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
         return I_shape(UNIT_LENGTH, WIDTH, HEIGHT)
 
 def place_and_check(placed_shapes, moving_shape):
