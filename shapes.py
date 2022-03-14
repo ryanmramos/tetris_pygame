@@ -62,11 +62,11 @@ class Shape:
         for cord in self.grid_cords:
             cordX = int(cord.x)
             cordY = int(cord.y)
-            if cord.y + 1 >= self.grid.num_rows or self.grid.grid[cordX][cordY + 1] == 1:
+            if cord.y + 1 >= self.grid.num_rows or self.grid.grid[cordY + 1][cordX] == 1:
                 for set_cord in self.grid_cords:
                     cordX = int(set_cord.x)
                     cordY = int(set_cord.y)
-                    self.grid.grid[cordX][cordY] = 1
+                    self.grid.grid[cordY][cordX] = 1
                 return False
 
         for cord in self.grid_cords:
@@ -78,7 +78,8 @@ class Shape:
         for cord in self.grid_cords:
             cordX = int(cord.x)
             cordY = int(cord.y)
-            if cord.x - 1 <= -1 or self.grid.grid[cordX - 1][cordY] == 1:
+            # print(f"grid rows = {len(self.grid.grid)}\ngrid cols = {len(self.grid.grid[0])}")
+            if cord.x - 1 <= -1 or self.grid.grid[cordY][cordX - 1] == 1:
                 return
         
         for cord in self.grid_cords:
@@ -91,7 +92,7 @@ class Shape:
         for cord in self.grid_cords:
             cordX = int(cord.x)
             cordY = int(cord.y)
-            if cord.x + 1 >= self.grid.num_cols or self.grid.grid[cordX + 1][cordY] == 1:
+            if cord.x + 1 >= self.grid.num_cols or self.grid.grid[cordY][cordX + 1] == 1:
                 return
         
         for cord in self.grid_cords:

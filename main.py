@@ -65,11 +65,13 @@ def get_random_shape():
     elif i == 3:
         return O_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     elif i == 4:
-        return S_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+        # return S_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+        return I_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     elif i == 5:
         return T_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     else:
-        return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+        # return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+        return I_shape(UNIT_LENGTH, WIDTH, HEIGHT)
 
 def place_and_check(placed_shapes, moving_shape):
     placed_shapes.append(moving_shape)
@@ -82,13 +84,14 @@ def place_and_check(placed_shapes, moving_shape):
             checked_rows.append(cordY)
             destroy = True
             for i in range(0, moving_shape.grid.num_cols):
-                if current_grid[i][cordY] == 0:
-                    print(f"not --> {i},{cordY}")
+                # print(f"row: {i}\ncol: {cordY}")
+                if current_grid[cordY][i] == 0:
+                    # print(f"not --> {i},{cordY}: {current_grid[cordY][i]}")
                     destroy = False
                     break
             if destroy:
                 rows_to_destroy.append(cordY)
-                print(f"destroy row:{cordY}")
+                # print(f"destroy row:{cordY}")
             print()
     
     if len(rows_to_destroy) > 0:

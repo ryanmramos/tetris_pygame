@@ -8,7 +8,7 @@ class Grid:
     def __init__(self, START_X, START_Y, UNIT_LENGTH):
         self.num_rows = 20
         self.num_cols = 10
-        self.grid = [[0 for r in range(self.num_rows)] for c in range(self.num_cols)]
+        self.grid = [[0 for c in range(self.num_cols)] for r in range(self.num_rows)]
         self.START_X = START_X
         self.START_Y = START_Y
         self.UNIT_LENGTH = UNIT_LENGTH
@@ -41,13 +41,18 @@ class Grid:
                 cordX = (int) (shape.grid_cords[i].x)
                 cordY = (int) (shape.grid_cords[i].y)
                 if cordY in rows_to_destroy:
-                    shape.grid.grid[cordX][cordY] = 0
+                    shape.grid.grid[cordY][cordX] = 0
                     shape.grid_cords.pop(i)
+                i -= 1
 
-                elif cordY < min_row: # fix this lol
-                    if cordY - num_rows < 0 or shape.grid.grid[cordX][cordY - num_rows] == 0:
-                        shape.grid.grid[cordX][cordY] = 0
-                    shape.grid.grid[cordX][cordY + num_rows] = 1
+        for shape in placed_shapes:
+            i = len(shape.grid_cords) - 1
+            while i >= 0:
+                cordX = (int) (shape.grid_cords[i].x)
+                cordY = (int) (shape.grid_cords[i].y)
+                if cordY < min_row:
+                    shape.grid.grid[cordY][cordX] -= 1
+                    shape.grid.grid[cordY + num_rows][cordX] += 1
                     shape.grid_cords[i].update(shape.grid_cords[i].x,
                         shape.grid_cords[i].y + num_rows)
                 i -= 1
