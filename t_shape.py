@@ -8,13 +8,13 @@ PURPLE = (255, 0, 255)
 
 class T_shape(Shape):
     def __init__(self, UNIT_LENGTH, WIDTH, HEIGHT):
-        super().__init__(UNIT_LENGTH, WIDTH, HEIGHT)
         self.color = PURPLE
         self.left_most_grid = 3
         self.right_most_grid = 5
         self.UNIT_LENGTH = UNIT_LENGTH
         self.grid_cords = [pg.Vector2(4, 0), pg.Vector2(3, 1), pg.Vector2(4, 1), pg.Vector2(5, 1)]
         self.rotate_about = pg.Vector2(4.5, 1.5)
+        super().__init__(UNIT_LENGTH, WIDTH, HEIGHT)
 
     # def move_left(self):
     #     if self.left_most_grid > 0:

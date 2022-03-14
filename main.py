@@ -29,7 +29,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0 ,0)
 YELLOW = (255, 255, 0)
-GREY = (170, 170, 170)
+GREY = (140, 140, 140)
 
 # Unit length
 UNIT_LENGTH = 20
@@ -53,6 +53,9 @@ def draw_window(placed_shapes, moving_shape, grid):
     
     pg.display.update()
 
+# def fill_bag():
+#     bag
+
 def get_random_shape():
     # return O_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     i = random.randint(0, 7)
@@ -72,6 +75,7 @@ def get_random_shape():
         return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
 
 def place_and_check(placed_shapes, moving_shape):
+    moving_shape.moving = False
     placed_shapes.append(moving_shape)
     checked_rows = []
     rows_to_destroy = []
