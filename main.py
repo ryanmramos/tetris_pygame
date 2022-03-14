@@ -12,6 +12,9 @@ from grid import Grid
 import math
 import random
 
+# things to add:
+# - add case where a piece CANNOT rotate
+
 # Window size
 WIDTH, HEIGHT = 600, 900
 
@@ -80,11 +83,13 @@ def place_and_check(placed_shapes, moving_shape):
             destroy = True
             for i in range(0, moving_shape.grid.num_cols):
                 if current_grid[i][cordY] == 0:
+                    print(f"not --> {i},{cordY}")
                     destroy = False
                     break
             if destroy:
                 rows_to_destroy.append(cordY)
                 print(f"destroy row:{cordY}")
+            print()
     
     if len(rows_to_destroy) > 0:
         placed_shapes = moving_shape.grid.destroy_rows(placed_shapes, rows_to_destroy)
@@ -137,10 +142,10 @@ def main():
                     down_held = False
                 if event.key == pg.K_LEFT:
                     left_held = False
+                    # moving_shape.move_left()
                 if event.key == pg.K_RIGHT:
                     right_held = False
-
-        draw_window(placed_shapes, moving_shape, grid)
+                    # moving_shape.move_right()
 
         if frame_num % 30 == 0 and not down_held:
             if not moving_shape.move_down():
@@ -155,6 +160,8 @@ def main():
                 continue
             quick_drop = False
             moving_shape = place_and_check(placed_shapes, moving_shape)
+
+        draw_window(placed_shapes, moving_shape, grid)
         
         if frame_num % 5 == 0:
             if left_held:

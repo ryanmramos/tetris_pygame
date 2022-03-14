@@ -34,6 +34,7 @@ class Grid:
 
     def destroy_rows(self, placed_shapes, rows_to_destroy):
         min_row = min(rows_to_destroy)
+        num_rows = len(rows_to_destroy)
         for shape in placed_shapes:
             i = len(shape.grid_cords) - 1
             while i >= 0:
@@ -43,11 +44,12 @@ class Grid:
                     shape.grid.grid[cordX][cordY] = 0
                     shape.grid_cords.pop(i)
 
-                elif cordY < min_row:
-                    shape.grid.grid[cordX][cordY] = 0
-                    shape.grid.grid[cordX][cordY + len(rows_to_destroy)] = 1
-                    shape.grid_cords[i].update(shape.grid_cords[i].x, shape.grid_cords[i].y +
-                        len(rows_to_destroy))
+                elif cordY < min_row: # fix this lol
+                    if cordY - num_rows < 0 or shape.grid.grid[cordX][cordY - num_rows] == 0:
+                        shape.grid.grid[cordX][cordY] = 0
+                    shape.grid.grid[cordX][cordY + num_rows] = 1
+                    shape.grid_cords[i].update(shape.grid_cords[i].x,
+                        shape.grid_cords[i].y + num_rows)
                 i -= 1
         return placed_shapes
 

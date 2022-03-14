@@ -45,6 +45,7 @@ class Shape:
             self.rotate_about.update(self.rotate_about.x + difference, self.rotate_about.y)
             self.left_most_grid += difference
             self.right_most_grid += difference
+        # for cord in self.grid_cords:
 
         elif self.right_most_grid > self.grid.num_cols - 1:
             difference = self.right_most_grid - (self.grid.num_cols - 1)
