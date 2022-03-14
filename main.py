@@ -69,7 +69,7 @@ def get_random_shape():
     elif i == 5:
         return T_shape(UNIT_LENGTH, WIDTH, HEIGHT)
     else:
-        return I_shape(UNIT_LENGTH, WIDTH, HEIGHT)
+        return Z_shape(UNIT_LENGTH, WIDTH, HEIGHT)
 
 def place_and_check(placed_shapes, moving_shape):
     placed_shapes.append(moving_shape)
