@@ -37,6 +37,9 @@ UNIT_LENGTH = 20
 # Set windown name
 pg.display.set_caption("tetris :)")
 
+# Bag to get next shape from
+bag = []
+
 def draw_window(placed_shapes, moving_shape, grid):
     WIN.fill(GREY)
     for shape in placed_shapes:
@@ -53,8 +56,14 @@ def draw_window(placed_shapes, moving_shape, grid):
     
     pg.display.update()
 
-# def fill_bag():
-#     bag
+def fill_bag():
+    bag.append(I_shape(UNIT_LENGTH, WIDTH, HEIGHT))
+    bag.append(J_shape(UNIT_LENGTH, WIDTH, HEIGHT))
+    bag.append(L_shape(UNIT_LENGTH, WIDTH, HEIGHT))
+    bag.append(O_shape(UNIT_LENGTH, WIDTH, HEIGHT))
+    bag.append(S_shape(UNIT_LENGTH, WIDTH, HEIGHT))
+    bag.append(T_shape(UNIT_LENGTH, WIDTH, HEIGHT))
+    bag.append(Z_shape(UNIT_LENGTH, WIDTH, HEIGHT))
 
 def get_random_shape():
     # return O_shape(UNIT_LENGTH, WIDTH, HEIGHT)
@@ -94,12 +103,13 @@ def place_and_check(placed_shapes, moving_shape):
             if destroy:
                 rows_to_destroy.append(cordY)
                 # print(f"destroy row:{cordY}")
-            print()
+            # print()
     
     if len(rows_to_destroy) > 0:
         placed_shapes = moving_shape.grid.destroy_rows(placed_shapes, rows_to_destroy)
 
-    return get_random_shape()
+    # randomly choose shape from the current bag
+    return bag.pop(random.randint(0, len(bag) - 1))
 
 def main():
     
@@ -107,7 +117,9 @@ def main():
     run = True
     shapes = []
     placed_shapes = []
-    moving_shape = get_random_shape()
+    # bag is initially empty, so fill it
+    fill_bag()
+    moving_shape = bag.pop(random.randint(0, len(bag) - 1))
     # testShape = Shape(UNIT_LENGTH, WIDTH, HEIGHT)
     frame_num = 1
     down_held = False # keeps track of whether or not down is being held
@@ -166,6 +178,13 @@ def main():
             quick_drop = False
             moving_shape = place_and_check(placed_shapes, moving_shape)
 
+        # must be checked after place_and_check
+        if len(bag) == 0:
+            fill_bag()
+
+        # prevents error in first calculating shadow position but need to find better fix probably
+        moving_shape.get_distance_down()
+        
         draw_window(placed_shapes, moving_shape, grid)
         
         if frame_num % 5 == 0:
